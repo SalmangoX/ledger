@@ -718,7 +718,7 @@ footer{margin-top:22px;display:flex;justify-content:space-between;align-items:ce
         <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill-rule="evenodd" fill="currentColor" d="M19.42 10.34 L21.92 10.70 L21.92 13.30 L19.42 13.66 L18.42 16.07 L19.93 18.09 L18.09 19.93 L16.07 18.42 L13.66 19.42 L13.30 21.92 L10.70 21.92 L10.34 19.42 L7.93 18.42 L5.91 19.93 L4.07 18.09 L5.58 16.07 L4.58 13.66 L2.08 13.30 L2.08 10.70 L4.58 10.34 L5.58 7.93 L4.07 5.91 L5.91 4.07 L7.93 5.58 L10.34 4.58 L10.70 2.08 L13.30 2.08 L13.66 4.58 L16.07 5.58 L18.09 4.07 L19.93 5.91 L18.42 7.93 Z M12 8.6a3.4 3.4 0 1 0 0 6.8a3.4 3.4 0 1 0 0-6.8z"/></svg>
       </button>
     </div>
-    <small class="ver">月账本 0.20</small>
+    <small class="ver">月账本 0.21</small>
   </div>
 </aside>
 
@@ -2199,7 +2199,7 @@ footer{margin-top:22px;display:flex;justify-content:space-between;align-items:ce
     const shade = $("shade");
     let y0 = null, x0 = 0, t0 = 0, dy = 0, mode = null, hdl = false;
     function start(x, y, target, isMouse){
-      if(!sh.classList.contains("on") || target.closest(".wheel, .bwrap") || (typeof kField !== "undefined" && kField)) return;
+      if(!sh.classList.contains("on") || target.closest(".wheel") || (typeof kField !== "undefined" && kField)) return;
       hdl = !!target.closest(".grab, h2");
       if(isMouse && !hdl) return;
       y0 = y; x0 = x; t0 = Date.now(); dy = 0; mode = null;
@@ -2250,6 +2250,13 @@ footer{margin-top:22px;display:flex;justify-content:space-between;align-items:ce
     window.addEventListener("mouseup", end);
   }
   document.querySelectorAll(".sheet").forEach(enableSwipe);
+  // 有面板打开时，锁住背后的页面；面板全部关掉后，页面回到原来的位置
+  (function(){
+    const sync = ()=>{ const any = !!document.querySelector(".sheet.on"); if(any !== document.body.classList.contains("locked")) lockScroll(any); };
+    const mo = new MutationObserver(sync);
+    document.querySelectorAll(".sheet").forEach(sh=>mo.observe(sh, {attributes:true, attributeFilter:["class"]}));
+    $("shade").addEventListener("touchmove", e=>{ if(e.cancelable) e.preventDefault(); }, {passive:false});
+  })();
 
   // ---------- 面板不动，只把正在填的那一行滚到键盘上方 ----------
   const frz = {sh:null, st:0, wy:0};
