@@ -1,5 +1,5 @@
 // 月账本离线缓存。发布新版时只改这里的版本号（和 index.html 里的 APP_VERSION 保持一致）。
-const VERSION = "ledger-0.23";
+const VERSION = "ledger-0.24";
 const FILES = ["./", "./index.html", "./manifest.webmanifest", "./icon-192.png", "./icon-512.png", "./apple-touch-icon.png"];
 
 self.addEventListener("install", e => {
