@@ -1,5 +1,5 @@
 // 月账本离线缓存。更新文件后把版本号 +1，手机下次联网打开时会自动换新。
-const VERSION = "ledger-0.21";
+const VERSION = "ledger-0.22";
 const FILES = ["./", "./index.html", "./manifest.webmanifest", "./icon-192.png", "./icon-512.png", "./apple-touch-icon.png"];
 
 self.addEventListener("install", e => {
